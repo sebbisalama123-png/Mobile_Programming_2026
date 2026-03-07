@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">Ndejje_Welcome_App</string>
+    <string name="student_name">Sebbi Salama</string>
+    <string name="programme">Bachelor of Computer Science</string>
+    <string name="reg_number">24/2/306/W/036</string>
 </resources>
