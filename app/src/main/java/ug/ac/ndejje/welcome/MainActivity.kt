@@ -1,5 +1,6 @@
 package ug.ac.ndejje.welcome
 
+import android.location.Geocoder.isPresent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -88,8 +89,8 @@ fun StudentIdCard(student: Student) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             StudentInfo(student)
-            Button(onClick = {/*Action here*/}) {
-                Text("View Profile")
+            Button(onClick = {/*Click here*/}) {
+                Text("Mark Present")
             }
         }
     }
