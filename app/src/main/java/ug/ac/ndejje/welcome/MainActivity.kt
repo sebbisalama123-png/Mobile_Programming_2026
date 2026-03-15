@@ -31,7 +31,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ug.ac.ndejje.welcome.ui.theme.Ndejje_Welcome_AppTheme
 
-
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,35 +38,40 @@ class MainActivity : ComponentActivity() {
         setContent {
             Ndejje_Welcome_AppTheme {
                 StudentDirectory()
-                }
             }
         }
     }
+}
+
 @Composable
 fun StudentInfo(student: Student) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.fillMaxWidth().padding(16.dp)
-        ) {
-            Image(
-                painter = painterResource(student.profileImageId),
-                contentDescription = "Profile Picture",
-                modifier = Modifier
-                    .size(120.dp)
-                    .clip(RoundedCornerShape(50))
-                    .padding(bottom = 8.dp),
-                contentScale = ContentScale.Crop
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxWidth().padding(16.dp)
+    ) {
+        Image(
+            painter = painterResource(student.profileImageId),
+            contentDescription = "Profile Picture",
+            modifier = Modifier
+                .size(120.dp)
+                .clip(RoundedCornerShape(50))
+                .padding(bottom = 8.dp),
+            contentScale = ContentScale.Crop
+        )
+        Text(
+            text = student.name,
+            style = MaterialTheme.typography.headlineSmall,
             )
-            Text(
-                text = student.name,
-                style = MaterialTheme.typography.headlineSmall,
-                )
-            Text(
-                text = student.regNumber,
-                color = Color.Red
-            )
+        Text(
+            text = student.regNumber,
+            color = Color.Red
+        )
+        if (student.isVerified) {
+            Text("Verified Student", color = Color.Green)
         }
+    }
 }
+
 @Composable
 fun StudentIdCard(student: Student) {
     ElevatedCard(
@@ -94,18 +98,16 @@ fun StudentIdCard(student: Student) {
 @Composable
 fun StudentDirectory(){
     val students = StudentProvider.studentList
-
     LazyColumn(
-        modifier = Modifier
-            .fillMaxWidth(),
         contentPadding = PaddingValues(16.dp)
     ) {
-        items(students) {student ->
+        items(students) { student ->
             StudentIdCard(student = student)
             Spacer(modifier = Modifier.height(12.dp))
         }
     }
 }
+
 @Preview(
     showBackground = true,
     showSystemUi = true)
