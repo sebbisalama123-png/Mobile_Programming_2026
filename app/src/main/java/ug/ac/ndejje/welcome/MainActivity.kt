@@ -1,40 +1,35 @@
 package ug.ac.ndejje.welcome
 
-import android.R.attr.text
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.runtime.Composable
 import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import ug.ac.ndejje.welcome.ui.theme.Ndejje_Welcome_AppTheme
-
 
 
 class MainActivity : ComponentActivity() {
@@ -43,70 +38,38 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             Ndejje_Welcome_AppTheme {
-                StudentIdCard()
+                StudentDirectory()
                 }
             }
         }
     }
 @Composable
-fun StudentInfo() {
-    val profileImage = painterResource(R.drawable.student_photo)
-    val logoImage = painterResource(R.drawable.ndu_logo)
-    Column(
-        modifier = Modifier.padding(10.dp),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Box {
+fun StudentInfo(student: Student) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier.fillMaxWidth().padding(16.dp)
+        ) {
             Image(
-                painter = profileImage,
-                contentDescription = "Student Photo",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.clip(RoundedCornerShape(percent = 10))
-            )
-            Image(
-                painter = logoImage,
-                contentDescription = null,
+                painter = painterResource(student.profileImageId),
+                contentDescription = "Profile Picture",
                 modifier = Modifier
-                    .size(80.dp)
-                    .align(Alignment.BottomEnd)
-                    .padding(4.dp)
+                    .size(120.dp)
+                    .clip(RoundedCornerShape(50))
+                    .padding(bottom = 8.dp),
+                contentScale = ContentScale.Crop
             )
-        }
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = stringResource(R.string.student_name),
-            style = MaterialTheme.typography.headlineSmall,
-            fontWeight = FontWeight.Bold,
-            color = MaterialTheme.colorScheme.primary
-        )
-        Text(
-            text = stringResource(R.string.programme),
-            style = MaterialTheme.typography.labelMedium,
-            color = MaterialTheme.colorScheme.secondary,
-            modifier = Modifier.padding(4.dp)
-        )
-        HorizontalDivider(
-            modifier = Modifier.padding(vertical = 12.dp, horizontal = 24.dp)
-        )
-        Row {
             Text(
-                text = "REG NO: ",
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(4.dp)
-            )
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(
-                text = stringResource(R.string.reg_number),
-                style = MaterialTheme.typography.labelMedium,
-                color = MaterialTheme.colorScheme.secondary,
-                modifier = Modifier.padding(4.dp)
+                text = student.name,
+                style = MaterialTheme.typography.headlineSmall,
                 )
+            Text(
+                text = student.regNumber,
+                color = Color.Red
+            )
         }
-    }
 }
 @Composable
-fun StudentIdCard() {
+fun StudentIdCard(student: Student) {
     ElevatedCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -116,7 +79,31 @@ fun StudentIdCard() {
             containerColor = MaterialTheme.colorScheme.surfaceVariant.copy(0.3f)
         )
     ) {
-        StudentInfo()
+        Column(
+            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            StudentInfo(student)
+            Button(onClick = {/*Action here*/}) {
+                Text("View Profile")
+            }
+        }
+    }
+}
+
+@Composable
+fun StudentDirectory(){
+    val students = StudentProvider.studentList
+
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth(),
+        contentPadding = PaddingValues(16.dp)
+    ) {
+        items(students) {student ->
+            StudentIdCard(student = student)
+            Spacer(modifier = Modifier.height(12.dp))
+        }
     }
 }
 @Preview(
@@ -125,6 +112,6 @@ fun StudentIdCard() {
 @Composable
 fun WelcomePreview() {
     Ndejje_Welcome_AppTheme() {
-        StudentIdCard()
+        StudentDirectory()
     }
 }
