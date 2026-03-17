@@ -1,6 +1,5 @@
 package ug.ac.ndejje.welcome
 
-import android.location.Geocoder.isPresent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -62,13 +61,13 @@ fun StudentInfo(student: Student) {
         Text(
             text = student.name,
             style = MaterialTheme.typography.headlineSmall,
-            )
+        )
         Text(
             text = student.regNumber,
             color = Color.Red
         )
         if (student.isVerified) {
-            Text("Verified Student", color = Color.Green)
+            Text("Verified Student",color = Color(0xFF4CAF50))
         }
     }
 }
@@ -89,8 +88,8 @@ fun StudentIdCard(student: Student) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             StudentInfo(student)
-            Button(onClick = {/*Click here*/}) {
-                Text("Mark Present")
+            Button(onClick = {/*Action here*/}) {
+                Text("View Profile")
             }
         }
     }
